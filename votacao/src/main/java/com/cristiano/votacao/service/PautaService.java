@@ -6,23 +6,25 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.cristiano.votacao.assembler.PautaAssembler;
+import com.cristiano.votacao.dto.PautaDto;
 import com.cristiano.votacao.enums.VotoStatusEnum;
 import com.cristiano.votacao.model.Pauta;
 import com.cristiano.votacao.model.Voto;
 import com.cristiano.votacao.repository.PautaRepository;
 import com.cristiano.votacao.type.ResultadoVotacao;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class PautaService {
 
-	public PautaRepository pautaRepository;
+	private PautaRepository pautaRepository;
+	private PautaAssembler pautaAssembler;
 	
-	public PautaService(PautaRepository pautaRepository) {
-		this.pautaRepository = pautaRepository;
-	}
-	
-	public Pauta criarPauta(@RequestBody Pauta pauta){
-		return pautaRepository.save(pauta);
+	public PautaDto criarPauta(@RequestBody Pauta pauta){
+		return pautaAssembler.toDto(pautaRepository.save(pauta));
 	}
 	
 	public ResultadoVotacao obterResultado(Long pautaId){

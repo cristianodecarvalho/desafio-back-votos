@@ -3,6 +3,7 @@ package com.cristiano.votacao.model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,9 @@ public class Usuario {
 	
 	private String nome;
 	
-	@OneToMany(mappedBy = "usuario")
+	private String cpf;
+
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Voto> votos;
 
 	public Long getId() {
@@ -44,5 +47,13 @@ public class Usuario {
 
 	public void setVotos(List<Voto> votos) {
 		this.votos = votos;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 }

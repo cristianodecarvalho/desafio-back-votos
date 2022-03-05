@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cristiano.votacao.dto.PautaDto;
 import com.cristiano.votacao.model.Pauta;
 import com.cristiano.votacao.service.PautaService;
 
@@ -20,7 +21,7 @@ public class PautaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Pauta> criarPauta(@RequestBody Pauta pauta){
+	public ResponseEntity<PautaDto> criarPauta(@RequestBody Pauta pauta){
 		return ResponseEntity.ok(pautaService.criarPauta(pauta));
 	}
 	

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cristiano.votacao.dto.SessaoDto;
 import com.cristiano.votacao.model.Sessao;
 import com.cristiano.votacao.service.SessaoService;
 
@@ -20,7 +21,7 @@ public class SessaoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Sessao> criarSessao(@RequestBody Sessao sessao){
+	public ResponseEntity<SessaoDto> criarSessao(@RequestBody Sessao sessao){
 		return ResponseEntity.ok(sessaoService.criarSessao(sessao));
 	}
 	
