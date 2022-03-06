@@ -1,7 +1,5 @@
 package com.cristiano.votacao.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cristiano.votacao.dto.VotoDto;
-import com.cristiano.votacao.model.Voto;
+import com.cristiano.votacao.dto.input.VotoInput;
 import com.cristiano.votacao.service.VotoService;
 
 @RestController
@@ -26,19 +23,22 @@ public class VotoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> votar(@RequestBody Voto voto) {
+	public ResponseEntity<Object> votar(@RequestBody VotoInput votoInput) {
 		try {
-			var votoComputado = votoService.votar(voto);
-			return ResponseEntity.status(HttpStatus.OK).body(votoComputado);
+			return ResponseEntity.status(HttpStatus.OK).body(votoService.votar(votoInput));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu um erro ao votar");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 
 	@GetMapping("/pauta/{pautaId}")
-	public ResponseEntity<List<VotoDto>> votar(@PathVariable Long pautaId) {
-		List<VotoDto> votos = votoService.listarVotos(pautaId);
-		return ResponseEntity.status(HttpStatus.OK).body(votos);
+	public ResponseEntity<?> listarVotos(@PathVariable Long pautaId) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(votoService.listarVotos(pautaId));	
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		
 	}
 
 }

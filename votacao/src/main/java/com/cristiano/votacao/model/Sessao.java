@@ -1,58 +1,60 @@
 package com.cristiano.votacao.model;
 
-import java.sql.Timestamp;
+import static java.util.Objects.nonNull;
+
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.cristiano.votacao.enums.SessaoStatusEnum;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "TB_SESSAO")
 public class Sessao {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@OneToOne
+	@JoinColumn(name="pauta_id")
 	private Pauta pauta;
 	
-	private Long duracao = 1L;
+	private Long duracao;
+	private OffsetDateTime  dataInicio;
+	private OffsetDateTime  dataFim;	
 	
-	private Timestamp createdAt;
-
-	public Long getId() {
-		return id;
+	public void abrirSessao() {
+		if(nonNull(dataInicio)) {
+			throw new RuntimeException("Sessão já foi aberta!");
+		}else {
+			setDataInicio(OffsetDateTime.now());
+			setDataFim(OffsetDateTime.now().plusMinutes(duracao));
+		}
+	}
+	
+	public SessaoStatusEnum obterStatusSessao() {
+		if( !nonNull(dataInicio) || !nonNull(dataFim) || OffsetDateTime.now().isBefore(dataInicio)) {
+			return SessaoStatusEnum.NAO_INICIADA;
+		}else if(OffsetDateTime.now().isAfter(dataFim)) {
+			return SessaoStatusEnum.FINALIZADA;
+		}
+		return SessaoStatusEnum.ABERTA;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Pauta getPauta() {
-		return pauta;
-	}
-
-	public void setPauta(Pauta pauta) {
-		this.pauta = pauta;
-	}
-
-	public Long getDuracao() {
-		return duracao;
-	}
-
-	public void setDuracao(Long duracao) {
-		this.duracao = duracao;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
 }

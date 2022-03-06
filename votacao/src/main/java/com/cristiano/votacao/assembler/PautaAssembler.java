@@ -1,9 +1,13 @@
 package com.cristiano.votacao.assembler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.cristiano.votacao.dto.PautaDto;
+import com.cristiano.votacao.dto.input.PautaInput;
 import com.cristiano.votacao.model.Pauta;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +22,13 @@ public class PautaAssembler {
 		return modelMapper.map(pauta, PautaDto.class);
 	}
 
-	public Pauta toEntity(PautaDto pautaDto) {
-		return modelMapper.map(pautaDto, Pauta.class);
+	public Pauta toEntity(PautaInput pautaInput) {
+		return modelMapper.map(pautaInput, Pauta.class);
+	}
+	
+	public List<PautaDto> toListPautaDTO(List<Pauta> pautas){
+		return pautas.stream()
+				.map(this::toDto)
+				.collect(Collectors.toList());
 	}
 }

@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.cristiano.votacao.dto.VotoDto;
+import com.cristiano.votacao.dto.input.VotoInput;
 import com.cristiano.votacao.model.Voto;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class VotoAssembler {
 		return modelMapper.map(voto, VotoDto.class);
 	}
 	
-	public Voto toEntity(VotoDto votoDto) {
-		return modelMapper.map(votoDto, Voto.class);
+	public Voto toEntity(VotoInput votoInput) {
+		return modelMapper.map(votoInput, Voto.class);
 	}
 	
 	public List<VotoDto> toListVotoDTO(List<Voto> votos){

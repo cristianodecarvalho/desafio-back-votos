@@ -3,11 +3,13 @@ package com.cristiano.votacao.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cristiano.votacao.assembler.PautaAssembler;
 import com.cristiano.votacao.dto.PautaDto;
+import com.cristiano.votacao.dto.input.PautaInput;
 import com.cristiano.votacao.enums.VotoStatusEnum;
 import com.cristiano.votacao.model.Pauta;
 import com.cristiano.votacao.model.Voto;
@@ -23,15 +25,28 @@ public class PautaService {
 	private PautaRepository pautaRepository;
 	private PautaAssembler pautaAssembler;
 	
-	public PautaDto criarPauta(@RequestBody Pauta pauta){
-		return pautaAssembler.toDto(pautaRepository.save(pauta));
+	public List<PautaDto> listarPautas(){
+		return pautaAssembler.toListPautaDTO(pautaRepository.findAll());
 	}
 	
-	public ResultadoVotacao obterResultado(Long pautaId){
+	@Transactional
+	public PautaDto criarPauta(PautaInput pautaInput){
+		return pautaAssembler.toDto(pautaRepository.save(pautaAssembler.toEntity(pautaInput)));
+	}
+	
+	public PautaDto encontrarPauta(Long id) {
+		Optional<Pauta> pauta =  pautaRepository.findById(id);
+		if(!pauta.isPresent()) {
+			throw new RuntimeException("Pauta não existe!");
+		}
+		
+		return pautaAssembler.toDto(pauta.get());
+	}
+	
+	public ResultadoVotacao apurarVotos(Long pautaId){
 		Optional<Pauta> pauta = pautaRepository.findById(pautaId);
 		if(!pauta.isPresent()) {
-			return null;
-			//throw new Exception("Pauta inexistente");
+			throw new RuntimeException("Pauta não existe!");
 		}
 		
 		List<Voto> votos = pauta.get().getVotos();
@@ -45,9 +60,7 @@ public class PautaService {
 				resultado.incrementarContadorNao();
 			}
 		}
-		
 		return resultado;
-		
 	}
 	
 }

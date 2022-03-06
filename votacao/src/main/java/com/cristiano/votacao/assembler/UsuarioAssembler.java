@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.cristiano.votacao.dto.UsuarioDto;
+import com.cristiano.votacao.dto.input.UsuarioInput;
 import com.cristiano.votacao.model.Usuario;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,10 @@ public class UsuarioAssembler {
 	
 	public UsuarioDto toDto(Usuario usuario) {
 		return modelMapper.map(usuario, UsuarioDto.class);
+	}
+	
+	public Usuario toEntity(UsuarioInput usuarioInput) {
+		return modelMapper.map(usuarioInput, Usuario.class);
 	}
 	
 	public Usuario toEntity(UsuarioDto usuarioDto) {
