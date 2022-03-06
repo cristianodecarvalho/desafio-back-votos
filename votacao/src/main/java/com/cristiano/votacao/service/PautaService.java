@@ -56,9 +56,9 @@ public class PautaService {
 		
 		for(Voto voto : votos) {
 			if(voto.getStatus() == VotoStatusEnum.SIM) {
-				resultado.incrementarContadorSim();
+				resultado.incrementarVotosAFavor();
 			}else {
-				resultado.incrementarContadorNao();
+				resultado.incrementarVotosContra();
 			}
 		}
 		

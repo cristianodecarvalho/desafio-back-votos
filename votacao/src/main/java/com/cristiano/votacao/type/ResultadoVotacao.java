@@ -7,17 +7,17 @@ import lombok.Setter;
 @Setter
 public class ResultadoVotacao {
 	
-	private int contadorSim = 0;
+	private int votosAFavor = 0;
 	
-	private int contadorNao = 0;
+	private int votosContra = 0;
 	
 	
-	public void incrementarContadorSim() {
-		contadorSim++;
+	public void incrementarVotosAFavor() {
+		votosAFavor++;
 	}
 	
-	public void incrementarContadorNao() {
-		contadorNao++;
+	public void incrementarVotosContra() {
+		votosContra++;
 	}
 	
 }

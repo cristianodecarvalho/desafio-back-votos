@@ -27,17 +27,22 @@ public class SessaoService {
 	private SessaoRepository sessaoRepository;
 	private SessaoAssembler sessaoAssembler;
 	private PautaService pautaService;
+
 	
 	@Transactional
 	public SessaoDto abrirSessao(Long pautaId, Long duracao){
 		PautaDto pauta = pautaService.encontrarPauta(pautaId);
+		Sessao sessao = sessaoRepository.findByPautaId(pautaId); 
+		if(!isNull(sessao)) {
+			throw new VotacaoException("Sessão já foi aberta!");	
+		}
 		if(isNull(pauta)) {
 			throw new VotacaoException("Pauta não existe!");
 		}
 		SessaoInput sessaoInput = SessaoInput.builder().setPauta(pauta).setDuracao(duracao).build();
-		Sessao sessao =  sessaoRepository.save(sessaoAssembler.toEntity(sessaoInput));
-		sessao.abrirSessao();
-		return sessaoAssembler.toDto(sessaoRepository.save(sessao));
+		Sessao sessaoSalva =  sessaoRepository.save(sessaoAssembler.toEntity(sessaoInput));
+		sessaoSalva.abrirSessao();
+		return sessaoAssembler.toDto(sessaoRepository.save(sessaoSalva));
 	}
 	
 	public List<SessaoDto> listarSessoes(){
