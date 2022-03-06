@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.cristiano.votacao.enums.SessaoStatusEnum;
 
@@ -33,8 +35,10 @@ public class Sessao {
 	
 	@OneToOne
 	@JoinColumn(name="pauta_id")
+	@NotBlank(message = "Pauta é obrigatória")
 	private Pauta pauta;
 	
+	@Size(min = 1, message = "Duração miníma de 1 minuto.")
 	private Long duracao;
 	private OffsetDateTime  dataInicio;
 	private OffsetDateTime  dataFim;	

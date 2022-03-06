@@ -27,20 +27,20 @@ public class SessaoService {
 	private SessaoAssembler sessaoAssembler;
 	private PautaService pautaService;
 	
-	public List<SessaoDto> listarSessoes(){
-		return sessaoAssembler.toListSessaoDTO(sessaoRepository.findAll());
-	}
-	
 	@Transactional
 	public SessaoDto abrirSessao(Long pautaId, Long duracao){
 		PautaDto pauta = pautaService.encontrarPauta(pautaId);
 		if(isNull(pauta)) {
-			throw new RuntimeException("A pauta não existe!");
+			throw new RuntimeException("Pauta não existe!");
 		}
 		SessaoInput sessaoInput = SessaoInput.builder().setPauta(pauta).setDuracao(duracao).build();
 		Sessao sessao =  sessaoRepository.save(sessaoAssembler.toEntity(sessaoInput));
 		sessao.abrirSessao();
 		return sessaoAssembler.toDto(sessaoRepository.save(sessao));
+	}
+	
+	public List<SessaoDto> listarSessoes(){
+		return sessaoAssembler.toListSessaoDTO(sessaoRepository.findAll());
 	}
 	
 	public SessaoStatusEnum obterStatusSessao(Long pautaId) {

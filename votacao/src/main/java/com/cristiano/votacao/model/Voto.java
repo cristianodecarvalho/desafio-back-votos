@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.cristiano.votacao.enums.VotoStatusEnum;
 
@@ -29,13 +30,16 @@ public class Voto {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank(message = "Você precisar informar o status do voto(SIM/NAO)")
 	@Enumerated(EnumType.STRING)
 	private VotoStatusEnum status;
 	
+	@NotBlank(message = "Você precisar informar a pauta")
 	@ManyToOne
 	@JoinColumn(name = "pauta_id")
 	private Pauta pauta;
 	
+	@NotBlank(message = "Você precisar informar o usuário")
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;

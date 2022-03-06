@@ -25,13 +25,13 @@ public class PautaService {
 	private PautaRepository pautaRepository;
 	private PautaAssembler pautaAssembler;
 	
-	public List<PautaDto> listarPautas(){
-		return pautaAssembler.toListPautaDTO(pautaRepository.findAll());
-	}
-	
 	@Transactional
 	public PautaDto criarPauta(PautaInput pautaInput){
 		return pautaAssembler.toDto(pautaRepository.save(pautaAssembler.toEntity(pautaInput)));
+	}
+	
+	public List<PautaDto> listarPautas(){
+		return pautaAssembler.toListPautaDTO(pautaRepository.findAll());
 	}
 	
 	public PautaDto encontrarPauta(Long id) {
@@ -60,6 +60,7 @@ public class PautaService {
 				resultado.incrementarContadorNao();
 			}
 		}
+		
 		return resultado;
 	}
 	

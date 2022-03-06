@@ -31,4 +31,5 @@ public class SessaoAssembler {
 				.map(this::toDto)
 				.collect(Collectors.toList());
 	}
+	
 }

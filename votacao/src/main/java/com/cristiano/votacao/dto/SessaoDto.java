@@ -15,7 +15,7 @@ public class SessaoDto {
 
 	private Long id;
 	private PautaDto pauta;
-	private Long duracao = 1L;
+	private Long duracao;
 	private OffsetDateTime  dataInicio;
 	private OffsetDateTime  dataFim;
 	

@@ -31,4 +31,5 @@ public class PautaAssembler {
 				.map(this::toDto)
 				.collect(Collectors.toList());
 	}
+	
 }

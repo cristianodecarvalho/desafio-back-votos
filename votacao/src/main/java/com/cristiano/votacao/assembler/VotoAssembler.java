@@ -31,4 +31,5 @@ public class VotoAssembler {
 				.map(this::toDto)
 				.collect(Collectors.toList());
 	}
+	
 }

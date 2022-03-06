@@ -2,6 +2,8 @@ package com.cristiano.votacao.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.cristiano.votacao.assembler.UsuarioAssembler;
@@ -19,6 +21,7 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	private UsuarioAssembler usuarioAssembler;
 	
+	@Transactional
 	public UsuarioDto criarUsuario(UsuarioInput usuarioInput) {
 		return usuarioAssembler.toDto(usuarioRepository.save(usuarioAssembler.toEntity(usuarioInput)));
 	}
@@ -28,7 +31,6 @@ public class UsuarioService {
 		if(!usuario.isPresent()) {
 			throw new RuntimeException("Usuário não existe!");
 		}
-		
 		return usuarioAssembler.toDto(usuario.get());
 	}
 	

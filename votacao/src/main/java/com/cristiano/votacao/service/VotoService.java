@@ -35,11 +35,6 @@ public class VotoService {
 	private SessaoService sessaoService;
 	private UsuarioAssembler usuarioAssembler;
 	
-	public List<VotoDto> listarVotos(Long pautaId){
-		pautaService.encontrarPauta(pautaId);
-		return votoAssembler.toListVotoDTO(votoRepository.findByPautaId(pautaId));
-	}
-	
 	@Transactional
 	public VotoDto votar(VotoInput votoInput){
 		Voto voto = votoAssembler.toEntity(votoInput);
@@ -56,13 +51,18 @@ public class VotoService {
 		}
 		SessaoStatusEnum status = sessaoService.obterStatusSessao(pautaId);
 		if(status.equals(SessaoStatusEnum.INEXISTENTE)) {
-			throw new RuntimeException("A sesssão não existe!");	
+			throw new RuntimeException("Sesssão não existe!");	
 		}else if(status.equals(SessaoStatusEnum.NAO_INICIADA)) {
-			throw new RuntimeException("A sesssão ainda não foi iniciada!");	
+			throw new RuntimeException("Sesssão ainda não foi iniciada!");	
 		}else if(status.equals(SessaoStatusEnum.FINALIZADA)) {
-			throw new RuntimeException("A sesssão já foi finalizada!");	
+			throw new RuntimeException("Sesssão já foi finalizada!");	
 		} 
 		return votoAssembler.toDto(votoRepository.save(voto));
+	}
+	
+	public List<VotoDto> listarVotos(Long pautaId){
+		pautaService.encontrarPauta(pautaId);
+		return votoAssembler.toListVotoDTO(votoRepository.findByPautaId(pautaId));
 	}
 	
 	private void validarCpf(String cpf) {

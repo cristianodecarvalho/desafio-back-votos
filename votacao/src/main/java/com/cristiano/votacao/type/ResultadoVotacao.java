@@ -1,5 +1,10 @@
 package com.cristiano.votacao.type;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ResultadoVotacao {
 	
 	private int contadorSim = 0;
@@ -13,22 +18,6 @@ public class ResultadoVotacao {
 	
 	public void incrementarContadorNao() {
 		contadorNao++;
-	}
-
-	public int getContadorSim() {
-		return contadorSim;
-	}
-
-	public void setContadorSim(int contadorSim) {
-		this.contadorSim = contadorSim;
-	}
-
-	public int getContadorNao() {
-		return contadorNao;
-	}
-
-	public void setContadorNao(int contadorNao) {
-		this.contadorNao = contadorNao;
 	}
 	
 }
