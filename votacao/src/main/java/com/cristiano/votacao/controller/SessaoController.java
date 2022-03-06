@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristiano.votacao.dto.SessaoDto;
+import com.cristiano.votacao.exception.VotacaoException;
 import com.cristiano.votacao.service.SessaoService;
 
 import lombok.AllArgsConstructor;
@@ -41,6 +42,9 @@ public class SessaoController {
 	@PatchMapping("abrir/{pautaId}")
 	public ResponseEntity<?> abrirSessao(@PathVariable Long pautaId, @RequestParam(defaultValue = "1", required = false) Long duracao){
 		try {
+			if(duracao < 1) {
+				throw new VotacaoException("Duração deve ser maior igual a 1");	
+			}
 			return ResponseEntity.status(HttpStatus.OK).body(sessaoService.abrirSessao(pautaId, duracao));		
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -11,10 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 import com.cristiano.votacao.enums.SessaoStatusEnum;
+import com.cristiano.votacao.exception.VotacaoException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,17 +35,16 @@ public class Sessao {
 	
 	@OneToOne
 	@JoinColumn(name="pauta_id")
-	@NotBlank(message = "Pauta é obrigatória")
+	@NotNull(message = "Pauta é obrigatória")
 	private Pauta pauta;
 	
-	@Size(min = 1, message = "Duração miníma de 1 minuto.")
 	private Long duracao;
 	private OffsetDateTime  dataInicio;
 	private OffsetDateTime  dataFim;	
 	
 	public void abrirSessao() {
 		if(nonNull(dataInicio)) {
-			throw new RuntimeException("Sessão já foi aberta!");
+			throw new VotacaoException("Sessão já foi aberta!");
 		}else {
 			setDataInicio(OffsetDateTime.now());
 			setDataFim(OffsetDateTime.now().plusMinutes(duracao));

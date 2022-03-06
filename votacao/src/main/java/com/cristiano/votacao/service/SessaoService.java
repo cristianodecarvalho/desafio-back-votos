@@ -13,6 +13,7 @@ import com.cristiano.votacao.dto.PautaDto;
 import com.cristiano.votacao.dto.SessaoDto;
 import com.cristiano.votacao.dto.input.SessaoInput;
 import com.cristiano.votacao.enums.SessaoStatusEnum;
+import com.cristiano.votacao.exception.VotacaoException;
 import com.cristiano.votacao.model.Sessao;
 import com.cristiano.votacao.repository.SessaoRepository;
 import com.cristiano.votacao.type.ResultadoVotacao;
@@ -31,7 +32,7 @@ public class SessaoService {
 	public SessaoDto abrirSessao(Long pautaId, Long duracao){
 		PautaDto pauta = pautaService.encontrarPauta(pautaId);
 		if(isNull(pauta)) {
-			throw new RuntimeException("Pauta não existe!");
+			throw new VotacaoException("Pauta não existe!");
 		}
 		SessaoInput sessaoInput = SessaoInput.builder().setPauta(pauta).setDuracao(duracao).build();
 		Sessao sessao =  sessaoRepository.save(sessaoAssembler.toEntity(sessaoInput));

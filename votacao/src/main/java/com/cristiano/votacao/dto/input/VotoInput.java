@@ -1,7 +1,7 @@
 package com.cristiano.votacao.dto.input;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.cristiano.votacao.enums.VotoStatusEnum;
 
@@ -12,15 +12,15 @@ import lombok.Setter;
 @Setter
 public class VotoInput {
 
-	@NotBlank
+	@NotNull(message = "Você precisar informar o status do voto(SIM/NAO)")
 	private VotoStatusEnum status;
 	
 	@Valid
-	@NotBlank
+	@NotNull
 	private PautaIdInput pauta;
 	
 	@Valid
-	@NotBlank
+	@NotNull
 	private UsuarioIdInput usuario;
 	
 }

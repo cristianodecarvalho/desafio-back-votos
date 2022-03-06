@@ -1,6 +1,6 @@
 package com.cristiano.votacao.dto.input;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class UsuarioIdInput {
 
-	@NotBlank(message = "Id do usuário é obrigatório")
+	@NotNull
 	private Long id;
 	
 }

@@ -17,6 +17,7 @@ import com.cristiano.votacao.dto.VotoDto;
 import com.cristiano.votacao.dto.input.VotoInput;
 import com.cristiano.votacao.enums.CpfStatusEnum;
 import com.cristiano.votacao.enums.SessaoStatusEnum;
+import com.cristiano.votacao.exception.VotacaoException;
 import com.cristiano.votacao.model.Usuario;
 import com.cristiano.votacao.model.Voto;
 import com.cristiano.votacao.repository.VotoRepository;
@@ -47,15 +48,13 @@ public class VotoService {
 		validarCpf(usuario.getCpf());
 		Voto votoEncontrado = votoRepository.findByPautaIdAndUsuarioId(pautaId, usuarioId);
 		if(nonNull(votoEncontrado)) {
-			throw new RuntimeException("Usuário já votou para essa pauta!");
+			throw new VotacaoException("Usuário já votou para essa pauta!");
 		}
 		SessaoStatusEnum status = sessaoService.obterStatusSessao(pautaId);
-		if(status.equals(SessaoStatusEnum.INEXISTENTE)) {
-			throw new RuntimeException("Sesssão não existe!");	
-		}else if(status.equals(SessaoStatusEnum.NAO_INICIADA)) {
-			throw new RuntimeException("Sesssão ainda não foi iniciada!");	
+		if(status.equals(SessaoStatusEnum.INEXISTENTE) || status.equals(SessaoStatusEnum.NAO_INICIADA)) {
+			throw new VotacaoException("Sessão não foi iniciada ou não existe!");	
 		}else if(status.equals(SessaoStatusEnum.FINALIZADA)) {
-			throw new RuntimeException("Sesssão já foi finalizada!");	
+			throw new VotacaoException("Sessão já foi finalizada!");	
 		} 
 		return votoAssembler.toDto(votoRepository.save(voto));
 	}
@@ -68,9 +67,9 @@ public class VotoService {
 	private void validarCpf(String cpf) {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<CpfStatus> cpfStatus = restTemplate.getForEntity("https://user-info.herokuapp.com/users/" + cpf, CpfStatus.class);
-		CpfStatus body= Optional.of(cpfStatus.getBody()).orElseThrow(() -> new RuntimeException("Não foi possível validar o CPF"));
+		CpfStatus body= Optional.of(cpfStatus.getBody()).orElseThrow(() -> new VotacaoException("Não foi possível validar o CPF"));
 		if(CpfStatusEnum.valueOf(body.getStatus()).equals(CpfStatusEnum.UNABLE_TO_VOTE)) {
-			throw new RuntimeException("Usuário não pode votar!");
+			throw new VotacaoException("Usuário não pode votar!");
 		}
 	}
 	
