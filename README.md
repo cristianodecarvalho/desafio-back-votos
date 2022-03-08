@@ -34,4 +34,5 @@ Existe um arquivo no diretório **votação** chamado *Votacao.postman_collectio
 
 ### Para fazer a importação, execute os seguintes passos:
 >  *No menu do Postman selecione File > Import > Upload Files*
+
 >  *Ao selecionar o arquivo clique em Import*
